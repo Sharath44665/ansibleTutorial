@@ -4,14 +4,20 @@
   become: true
   tasks: 
 
-  - name: install apache and php
-    package:
+  - name: install apache and php for Ubuntu
+    apt:
       name:
-        - "{{ apachePkg }}"
-        - "{{ phpPkg }}"
+        - apache2
+        - libapache2-mod-php
       state: latest
       cache_valid_time: 50
-    # when: ansible_distribution == "Ubuntu"
+    when: ansible_distribution == "Ubuntu"
 
-
-
+  - name: install apache and php in amazon linux
+    yum:
+      name:
+        - httpd
+        - php
+      state: latest
+      cache_valid_time: 50
+    when: ansible_distribution == "Amazon Linux"

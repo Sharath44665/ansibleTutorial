@@ -1,2 +1,8 @@
-[my_ec2_instance]
-13.126.36.35 ansible_user=ubuntu ansible_ssh_private_key_file=/home/sharath/Downloads/security/DevopsKeyPair.pem apachePkg=apache2 phpPkg=libapache2-mod-php
+[web_servers]
+13.233.178.52 ansible_user=ubuntu
+
+[file_servers]
+52.66.5.232 ansible_user=ec2-user
+
+[db_servers]
+13.233.178.52 ansible_user=ubuntu
