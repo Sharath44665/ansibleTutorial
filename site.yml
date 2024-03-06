@@ -5,6 +5,7 @@
   pre_tasks:
 
   - name: install udpates (Amazon Linux)
+    tags: always
     yum:
       update_only: yes
       update_cache: yes
@@ -12,6 +13,7 @@
     when: ansible_distribution == "Amazon Linux"
 
   - name: install updates (Ubuntu)
+    tags: always
     apt:
       upgrade: dist
       cache_valid_time: 50
@@ -22,6 +24,7 @@
   tasks:
 
   - name: install apache and php for Ubuntu
+    tags: apache, apache2, Ubuntu
     apt:
       name:
         - apache2
@@ -30,6 +33,7 @@
     when: ansible_distribution == "Ubuntu"
 
   - name: install apache and php in amazon linux
+    tags: apache, centOS, httpd
     yum:
       name:
         - httpd
@@ -43,6 +47,7 @@
   tasks:
 
   - name: install mariadb package(centOS)
+    tags: centOS, db, mariadb
     yum:
       name: mariadb
       state: latest
@@ -50,6 +55,7 @@
 
 
   - name: install mariadb package(Ubuntu)
+    tags: db, mariadb, Ubuntu
     apt:
       name: mariadb-server
       state: latest
@@ -61,7 +67,8 @@
   tasks:
 
   - name: install samba package
-    package:
+    tags: samba
+    ansible.builtin.package:
       name: samba
       state: latest
 
