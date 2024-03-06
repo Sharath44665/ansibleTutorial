@@ -6,3 +6,6 @@
 
 [db_servers]
 13.233.178.52 ansible_user=ubuntu
+
+[workstations]
+13.233.178.52 ansible_user=ubuntu
