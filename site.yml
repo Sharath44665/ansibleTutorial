@@ -10,7 +10,7 @@
       update_only: yes
       update_cache: yes
       cache_valid_time: 50
-    when: ansible_distribution == "Amazon Linux"
+    when: ansible_distribution == "centOS"
 
   - name: install updates (Ubuntu)
     tags: always
@@ -57,6 +57,30 @@
         - php
       state: latest
     when: ansible_distribution == "Amazon"
+
+  - name: start httpd (centOS)
+    tags: apache, centOS, httpd
+    service:
+      name: httpd
+      enabled: yes
+      state: started
+    when: ansible_distribution == "centOS"
+
+  - name: change email address for admin
+    tags: apache, centOS, httpd
+    lineinfile:
+      path: /etc/httpd/conf/httpd.conf
+      regexp: '^ServerAdmin'
+      line: ServerAdmin somebody@somewhere.net
+    when: ansible_distribution == "centOS"
+    register: httpd
+
+  - name: restart httpd (centOS)
+    tags: apache, centOS, httpd
+    service:
+      name: httpd
+      state: restarted
+    when: httpd.changed
 
   - name: copy default html file for site
     tags: apache, apache2, httpd
