@@ -1,0 +1,48 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: install udpates (Amazon Linux)
+    tags: always
+    yum:
+      update_only: yes
+      update_cache: yes
+      cache_valid_time: 50
+    when: ansible_distribution == "centOS"
+
+  - name: install updates (Ubuntu)
+    tags: always
+    apt:
+      upgrade: dist
+      cache_valid_time: 50
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: create simone user
+    tags: always
+    user:
+      name: simone
+      groups: root
+
+  - name: add ssh key form simone
+    tags:  always
+    authorized_key:
+      user: simone
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAJVeVpc5sXAscLhwLQdNF01/JuWrGgvcPjyeCuMPHQu sharathwelcomesyouin@gmail.com"
+
+  - name: add sudoers file for simone
+    tags: always
+    copy:
+      src: sudoers_simone
+      dest: /etc/sudoers.d/simone
+      owner: root
+      group: root
+      mode: 0440
+
+
+
