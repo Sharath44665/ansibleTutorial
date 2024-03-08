@@ -2,16 +2,16 @@
   tags: apache, apache2, Ubuntu
   apt:
     name:
-      - apache2
-      - libapache2-mod-php
+      - "{{ apache_package_name }}"
+      - "{{ php_package_name }}"
     state: latest
   when: ansible_distribution == "Ubuntu"
 
-- name: inBstall apache and php in amazon linux
+- name: install apache and php in amazon linux
   tags: apache, centOS, httpd
   yum:
     name:
-      - httpd
+      - "{{ apache_service }}"
       - php
     state: latest
   when: ansible_distribution == "Amazon"
@@ -19,7 +19,7 @@
 - name: start httpd (centOS)
   tags: apache, centOS, httpd
   service:
-    name: httpd
+    name: "{{ apache_service }}"
     enabled: yes
     state: started
   when: ansible_distribution == "centOS"
@@ -29,16 +29,10 @@
   lineinfile:
     path: /etc/httpd/conf/httpd.conf
     regexp: '^ServerAdmin'
-    line: ServerAdmin somebody@somewhere.net
+    line: ServerAdmin somebody@somewhere.com
   when: ansible_distribution == "centOS"
-  register: httpd
+  register: restart_apache
 
-- name: restart httpd (centOS)
-  tags: apache, centOS, httpd
-  service:
-    name: httpd
-    state: restarted
-  when: httpd.changed
 
 - name: copy default html file for site
   tags: apache, apache2, httpd
